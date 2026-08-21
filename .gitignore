@@ -1,0 +1,7 @@
+temp_screenshots/
+*.pdf
+__pycache__/
+dist/
+build/
+*.spec
+.DS_Store

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoPage PDF - 螢幕自動翻頁截圖與 PDF 合併工具</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+  <!-- 導航列 -->
+  <nav class="max-w-5xl mx-auto px-6 py-6 flex justify-between items-center">
+    <div class="font-bold text-xl tracking-tight text-blue-600">AutoPage PDF</div>
+    <div class="space-x-4 text-sm font-medium">
+      <a href="#features" class="hover:text-blue-600">功能特色</a>
+      <a href="#how-to-use" class="hover:text-blue-600">使用教學</a>
+      <a href="https://github.com/wongsir1011/autopage-pdf" target="_blank" class="text-gray-600 hover:text-gray-900">GitHub 原始碼</a>
+      <a href="#download" class="text-blue-600 hover:underline font-semibold">下載工具</a>
+    </div>
+  </nav>
+
+  <!-- Hero 區塊 -->
+  <section class="max-w-4xl mx-auto px-6 py-16 text-center">
+    <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
+      自動化螢幕翻頁截圖<br><span class="text-blue-600">一鍵合併為清晰 PDF</span>
+    </h1>
+    <p class="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
+      專為個人研究、投影片筆記與畫面歸檔設計的輕量級自動化工具，支援自訂範圍、定時翻頁與高品質無損 PDF 輸出。
+    </p>
+    <div class="mt-8 flex justify-center gap-4">
+      <a href="#download" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition">下載使用</a>
+      <a href="#how-to-use" class="px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg border border-gray-300 hover:bg-gray-50 transition">查看教學</a>
+    </div>
+  </section>
+
+  <!-- 功能特點 -->
+  <section id="features" class="max-w-5xl mx-auto px-6 py-12">
+    <h2 class="text-2xl font-bold text-center text-gray-900 mb-8">核心功能</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <h3 class="font-bold text-lg mb-2 text-gray-800">精準範圍校準</h3>
+        <p class="text-gray-600 text-sm">提供互動式滑鼠定位，自動辨識左上與右下座標，僅擷取指定內容區塊。</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <h3 class="font-bold text-lg mb-2 text-gray-800">自動排程翻頁</h3>
+        <p class="text-gray-600 text-sm">自訂頁數與翻頁間隔，自動模擬鍵盤操作，支援滑鼠邊角防呆緊急中止。</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <h3 class="font-bold text-lg mb-2 text-gray-800">無損 PDF 合併</h3>
+        <p class="text-gray-600 text-sm">擷取完成後自動按序編排並轉檔為標準 PDF，兼具效率與畫質。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 使用教學 -->
+  <section id="how-to-use" class="max-w-4xl mx-auto px-6 py-12">
+    <h2 class="text-2xl font-bold text-center text-gray-900 mb-8">三步驟快速上手</h2>
+    <div class="space-y-4">
+      <div class="p-5 bg-white border border-gray-200 rounded-lg flex items-start gap-4">
+        <span class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-600 font-bold rounded-full shrink-0">1</span>
+        <div>
+          <h4 class="font-semibold text-gray-800">定位截圖區域</h4>
+          <p class="text-sm text-gray-600 mt-1">開啟閱讀視窗與程式，依照提示將滑鼠移至頁面左上角與右下角記錄座標。</p>
+        </div>
+      </div>
+      <div class="p-5 bg-white border border-gray-200 rounded-lg flex items-start gap-4">
+        <span class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-600 font-bold rounded-full shrink-0">2</span>
+        <div>
+          <h4 class="font-semibold text-gray-800">自動擷取與翻頁</h4>
+          <p class="text-sm text-gray-600 mt-1">設定總頁數與翻頁間隔後，程式自動執行「截圖 $\rightarrow$ 翻頁」循環。</p>
+        </div>
+      </div>
+      <div class="p-5 bg-white border border-gray-200 rounded-lg flex items-start gap-4">
+        <span class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-600 font-bold rounded-full shrink-0">3</span>
+        <div>
+          <h4 class="font-semibold text-gray-800">輸出 PDF 文件</h4>
+          <p class="text-sm text-gray-600 mt-1">擷取完成後自動無損合併為單一 PDF 文件，並清理暫存圖片。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 下載區塊 -->
+  <section id="download" class="bg-blue-50 py-16">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">取得工具原始碼</h2>
+      <p class="text-gray-600 mb-8">可直接至 GitHub 取得 Python 腳本或 Clone 專案使用。</p>
+      <div class="flex justify-center gap-4">
+        <a href="https://github.com/wongsir1011/autopage-pdf" target="_blank" class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 shadow transition">前往 GitHub Repository</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 頁尾 -->
+  <footer class="max-w-5xl mx-auto px-6 py-8 text-center text-xs text-gray-400">
+    <p class="mb-2">免責聲明：本工具僅供個人合法學習、研究及筆記備份用途，使用者需遵守相關版權法規及服務條款。</p>
+    <p>© 2026 wongsir1011. Open Source under MIT License.</p>
+  </footer>
+
+</body>
+</html>
