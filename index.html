@@ -14,7 +14,7 @@
     <div class="space-x-4 text-sm font-medium">
       <a href="#features" class="hover:text-blue-600">功能特色</a>
       <a href="#how-to-use" class="hover:text-blue-600">使用教學</a>
-      <a href="https://github.com/wongsir1011/autopage-pdf" target="_blank" class="text-gray-600 hover:text-gray-900">GitHub 原始碼</a>
+      <a href="https://github.com/wongsir1011/autopage-pdf" target="_blank" class="text-gray-600 hover:text-gray-900">GitHub</a>
       <a href="#download" class="text-blue-600 hover:underline font-semibold">下載工具</a>
     </div>
   </nav>
@@ -25,10 +25,10 @@
       自動化螢幕翻頁截圖<br><span class="text-blue-600">一鍵合併為清晰 PDF</span>
     </h1>
     <p class="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
-      專為個人研究、投影片筆記與畫面歸檔設計的輕量級自動化工具，支援自訂範圍、定時翻頁與高品質無損 PDF 輸出。
+      專為個人研究、投影片筆記與畫面歸檔設計的輕量級自動化工具，支援自訂範圍、0.5~2秒定時翻頁與高品質無損 PDF 輸出。
     </p>
     <div class="mt-8 flex justify-center gap-4">
-      <a href="https://github.com/wongsir1011/autopage-pdf/releases/latest" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition">下載使用</a>
+      <a href="#download" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition">立即下載</a>
       <a href="#how-to-use" class="px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg border border-gray-300 hover:bg-gray-50 transition">查看教學</a>
     </div>
   </section>
@@ -42,8 +42,8 @@
         <p class="text-gray-600 text-sm">提供互動式滑鼠定位，自動辨識左上與右下座標，僅擷取指定內容區塊。</p>
       </div>
       <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-        <h3 class="font-bold text-lg mb-2 text-gray-800">自動排程翻頁</h3>
-        <p class="text-gray-600 text-sm">自訂頁數與翻頁間隔，自動模擬鍵盤操作，支援滑鼠邊角防呆緊急中止。</p>
+        <h3 class="font-bold text-lg mb-2 text-gray-800">自訂翻頁間隔</h3>
+        <p class="text-gray-600 text-sm">支援 0.5 至 2.0 秒翻頁微調，自訂總頁數，具備滑鼠邊角緊急中止安全機制。</p>
       </div>
       <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
         <h3 class="font-bold text-lg mb-2 text-gray-800">無損 PDF 合併</h3>
@@ -60,21 +60,21 @@
         <span class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-600 font-bold rounded-full shrink-0">1</span>
         <div>
           <h4 class="font-semibold text-gray-800">定位截圖區域</h4>
-          <p class="text-sm text-gray-600 mt-1">開啟閱讀視窗與程式，依照提示將滑鼠移至頁面左上角與右下角記錄座標。</p>
+          <p class="text-sm text-gray-600 mt-1">開啟軟體與閱讀視窗，點擊校準按鈕，依提示將滑鼠移至頁面左上角與右下角記錄座標。</p>
         </div>
       </div>
       <div class="p-5 bg-white border border-gray-200 rounded-lg flex items-start gap-4">
         <span class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-600 font-bold rounded-full shrink-0">2</span>
         <div>
-          <h4 class="font-semibold text-gray-800">自動擷取與翻頁</h4>
-          <p class="text-sm text-gray-600 mt-1">設定總頁數與翻頁間隔後，程式自動執行「截圖 → 翻頁」循環。</p>
+          <h4 class="font-semibold text-gray-800">設定參數並啟動</h4>
+          <p class="text-sm text-gray-600 mt-1">輸入預計截圖頁數與翻頁間隔（0.5~2.0 秒），點擊開始後切換至閱讀視窗，軟體將自動循環擷取與翻頁。</p>
         </div>
       </div>
       <div class="p-5 bg-white border border-gray-200 rounded-lg flex items-start gap-4">
         <span class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-600 font-bold rounded-full shrink-0">3</span>
         <div>
-          <h4 class="font-semibold text-gray-800">輸出 PDF 文件</h4>
-          <p class="text-sm text-gray-600 mt-1">擷取完成後自動無損合併為單一 PDF 文件，並清理暫存圖片。</p>
+          <h4 class="font-semibold text-gray-800">自動生成 PDF</h4>
+          <p class="text-sm text-gray-600 mt-1">擷取完成後自動無損合併為單一 PDF 文件，並自動清理暫存圖片。</p>
         </div>
       </div>
     </div>
@@ -83,11 +83,25 @@
   <!-- 下載區塊 -->
   <section id="download" class="bg-blue-50 py-16">
     <div class="max-w-3xl mx-auto px-6 text-center">
-      <h2 class="text-3xl font-bold text-gray-900 mb-4">取得工具原始碼</h2>
-      <p class="text-gray-600 mb-8">可直接至 GitHub 取得 Python 腳本或 Clone 專案使用。</p>
-      <div class="flex justify-center gap-4">
-        <a href="https://github.com/wongsir1011/autopage-pdf/releases/latest" target="_blank" class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 shadow transition">前往 GitHub Repository</a>
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">取得 AutoPage PDF</h2>
+      <p class="text-gray-600 mb-8">完全免費且開源，點擊下方按鈕即可下載最新版本。</p>
+      
+      <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+        <a href="https://github.com/wongsir1011/autopage-pdf/releases/latest/download/autopage_gui.exe" 
+           class="w-full sm:w-auto px-6 py-3.5 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 shadow-md transition flex items-center justify-center gap-2">
+          <span>下載 Windows 版 (.exe)</span>
+        </a>
+        
+        <a href="https://github.com/wongsir1011/autopage-pdf/releases/latest" 
+           target="_blank"
+           class="w-full sm:w-auto px-6 py-3.5 bg-white text-gray-700 font-semibold rounded-lg border border-gray-300 hover:bg-gray-50 shadow-sm transition flex items-center justify-center gap-2">
+          <span>查看所有版本 (GitHub Releases)</span>
+        </a>
       </div>
+
+      <p class="text-xs text-gray-500 mt-4">
+        ※ 若下載後 Windows 系統跳出防護提示，點擊「其他資訊」$\rightarrow$「仍要執行」即可。
+      </p>
     </div>
   </section>
 
