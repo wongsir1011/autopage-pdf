@@ -25,7 +25,7 @@
       自動化螢幕翻頁截圖<br><span class="text-blue-600">一鍵合併為清晰 PDF</span>
     </h1>
     <p class="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
-      專為個人研究、投影片筆記與畫面歸檔設計的輕量級自動化工具，支援自訂範圍、0.5~2秒定時翻頁與高品質無損 PDF 輸出。
+      專為個人研究、投影片筆記與畫面歸檔設計的輕量級自動化工具，支援自訂範圍、0.5 ~ 2.0 秒定時翻頁與高品質無損 PDF 輸出。
     </p>
     <div class="mt-8 flex justify-center gap-4">
       <a href="#download" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition">立即下載</a>
@@ -43,11 +43,11 @@
       </div>
       <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
         <h3 class="font-bold text-lg mb-2 text-gray-800">自訂翻頁間隔</h3>
-        <p class="text-gray-600 text-sm">支援 0.5 至 2.0 秒翻頁微調，自訂總頁數，具備滑鼠邊角緊急中止安全機制。</p>
+        <p class="text-gray-600 text-sm">支援 0.5 至 2.0 秒微調，自訂總頁數，具備滑鼠甩至邊角緊急中止安全機制。</p>
       </div>
       <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
         <h3 class="font-bold text-lg mb-2 text-gray-800">無損 PDF 合併</h3>
-        <p class="text-gray-600 text-sm">擷取完成後自動按序編排並轉檔為標準 PDF，兼具效率與畫質。</p>
+        <p class="text-gray-600 text-sm">擷取完成後自動按序編排並轉檔為標準 PDF，兼具高效率與原始畫質。</p>
       </div>
     </div>
   </section>
@@ -60,14 +60,14 @@
         <span class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-600 font-bold rounded-full shrink-0">1</span>
         <div>
           <h4 class="font-semibold text-gray-800">定位截圖區域</h4>
-          <p class="text-sm text-gray-600 mt-1">開啟軟體與閱讀視窗，點擊校準按鈕，依提示將滑鼠移至頁面左上角與右下角記錄座標。</p>
+          <p class="text-sm text-gray-600 mt-1">開啟軟體與閱讀視窗，點擊「校準截圖區域」，依提示將滑鼠移至頁面左上角與右下角記錄座標。</p>
         </div>
       </div>
       <div class="p-5 bg-white border border-gray-200 rounded-lg flex items-start gap-4">
         <span class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-600 font-bold rounded-full shrink-0">2</span>
         <div>
           <h4 class="font-semibold text-gray-800">設定參數並啟動</h4>
-          <p class="text-sm text-gray-600 mt-1">輸入預計截圖頁數與翻頁間隔（0.5~2.0 秒），點擊開始後切換至閱讀視窗，軟體將自動循環擷取與翻頁。</p>
+          <p class="text-sm text-gray-600 mt-1">輸入預計截圖頁數與翻頁間隔（0.5 ~ 2.0 秒），點擊開始後在 5 秒內切換至閱讀視窗，軟體將自動循環擷取與翻頁。</p>
         </div>
       </div>
       <div class="p-5 bg-white border border-gray-200 rounded-lg flex items-start gap-4">
@@ -84,23 +84,32 @@
   <section id="download" class="bg-blue-50 py-16">
     <div class="max-w-3xl mx-auto px-6 text-center">
       <h2 class="text-3xl font-bold text-gray-900 mb-4">取得 AutoPage PDF</h2>
-      <p class="text-gray-600 mb-8">完全免費且開源，點擊下方按鈕即可下載最新版本。</p>
+      <p class="text-gray-600 mb-8">完全免費且開源，請依你的作業系統選擇版本下載：</p>
       
       <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+        <!-- Windows 下載 -->
         <a href="https://github.com/wongsir1011/autopage-pdf/releases/latest/download/autopage_gui.exe" 
            class="w-full sm:w-auto px-6 py-3.5 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 shadow-md transition flex items-center justify-center gap-2">
           <span>下載 Windows 版 (.exe)</span>
         </a>
-        
-        <a href="https://github.com/wongsir1011/autopage-pdf/releases/latest" 
-           target="_blank"
-           class="w-full sm:w-auto px-6 py-3.5 bg-white text-gray-700 font-semibold rounded-lg border border-gray-300 hover:bg-gray-50 shadow-sm transition flex items-center justify-center gap-2">
-          <span>查看所有版本 (GitHub Releases)</span>
+
+        <!-- macOS 下載 -->
+        <a href="https://github.com/wongsir1011/autopage-pdf/releases/latest/download/AutoPage_PDF_Mac.zip" 
+           class="w-full sm:w-auto px-6 py-3.5 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-900 shadow-md transition flex items-center justify-center gap-2">
+          <span>下載 macOS 版 (.zip)</span>
         </a>
       </div>
 
-      <p class="text-xs text-gray-500 mt-4">
-        ※ 若下載後 Windows 系統跳出防護提示，點擊「其他資訊」$\rightarrow$「仍要執行」即可。
+      <div class="mt-6">
+        <a href="https://github.com/wongsir1011/autopage-pdf/releases/latest" 
+           target="_blank"
+           class="text-sm text-blue-600 hover:underline">
+          查看所有版本與更新紀錄 (GitHub Releases) $\rightarrow$
+        </a>
+      </div>
+
+      <p class="text-xs text-gray-500 mt-4 max-w-lg mx-auto">
+        ※ macOS 使用者解壓後首次執行，請按住 <code>Control</code> 鍵點選 App 選擇「打開」，並至「系統設定」>「隱私權與安全性」允許「螢幕錄製」與「輔助功能」權限。
       </p>
     </div>
   </section>
