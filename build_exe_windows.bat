@@ -1,36 +1,44 @@
 @echo off
-chcp 65001 >nul
-setlocal
+setlocal EnableExtensions
 cd /d "%~dp0"
-title AutoPage PDF v1.2.0 打包工具
+title AutoPage PDF v1.2.0 Builder
 
-where python >nul 2>nul
-if errorlevel 1 (
-    echo 找不到 Python。請先安裝 Python 3.8 或以上版本。
+set "PYTHON_CMD="
+py -3 --version >nul 2>&1
+if not errorlevel 1 set "PYTHON_CMD=py -3"
+if not defined PYTHON_CMD (
+    python --version >nul 2>&1
+    if not errorlevel 1 set "PYTHON_CMD=python"
+)
+
+if not defined PYTHON_CMD (
+    echo Python 3 was not found.
+    echo Install Python 3.8 or later and enable Add Python to PATH.
     pause
     exit /b 1
 )
 
 if not exist "venv_win\Scripts\python.exe" (
-    python -m venv venv_win
+    echo Creating the build environment. Please wait...
+    %PYTHON_CMD% -m venv "venv_win"
     if errorlevel 1 goto :error
 )
 
-call venv_win\Scripts\activate.bat
-python -m pip install --upgrade pip
-python -m pip install -r requirements-dev.txt
+"venv_win\Scripts\python.exe" -m pip install --upgrade pip
+if errorlevel 1 goto :error
+"venv_win\Scripts\python.exe" -m pip install -r "requirements-dev.txt"
 if errorlevel 1 goto :error
 
-pyinstaller --onefile --windowed --name "AutoPage_PDF_v1.2.0" --clean autopage_gui.py
+"venv_win\Scripts\python.exe" -m PyInstaller --onefile --windowed --name "AutoPage_PDF_v1.2.0" --clean "autopage_gui.py"
 if errorlevel 1 goto :error
 
 echo.
-echo 打包完成：dist\AutoPage_PDF_v1.2.0.exe
+echo Build completed: dist\AutoPage_PDF_v1.2.0.exe
 pause
 exit /b 0
 
 :error
 echo.
-echo 打包失敗，請檢查上方錯誤訊息。
+echo Build failed. Review the error message above.
 pause
 exit /b 1
