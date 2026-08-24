@@ -1,8 +1,17 @@
-# AutoPage PDF v1.2.0
+# AutoPage PDF v1.3.0
 
 跨平台（Windows／macOS）的本機螢幕自動翻頁截圖與無損 PDF 合併工具。
 
-## v1.2.0 新功能
+## v1.3.0 新功能
+
+- **可搜尋 PDF**：透過本機 Tesseract OCR 加入不可見文字層，保留原始頁面畫質並支援搜尋、選取及複製文字。
+- **中英文辨識**：內建繁體中文＋英文、簡體中文＋英文、繁體中文、簡體中文及英文設定。
+- **純文字匯出**：可在建立可搜尋 PDF 時，同步輸出同名 UTF-8 `TXT` 檔案。
+- **OCR 影像增強**：提供自動對比、灰階、黑白二值化及不處理；只影響辨識，不會改動 PDF 的可見圖片。
+- **環境檢查與容錯**：開始前檢查 Tesseract 及語言包；單頁 OCR 失敗時仍保留原圖頁面並繼續輸出。
+- **使用體驗**：顯示預計輸出頁數、逐頁 OCR 進度、完成提示音，並記住上次設定。
+
+## v1.2.0 功能
 
 - **Auto-crop**：偵測頁面與閱讀器背景的邊界，自動去除外圍工具列及留白。
 - **手動裁切**：可用像素分別設定左、上、右、下邊距。
@@ -28,12 +37,16 @@
 1. 安裝 Python 3.8 或以上版本，安裝時勾選 **Add Python to PATH**。
 2. 雙擊 `AutoPage_Windows.bat`；首次執行會自動建立虛擬環境及安裝套件。
 3. 如需單一 EXE，雙擊 `build_exe_windows.bat`，完成後到 `dist` 資料夾取用。
+4. 如需 OCR，另行安裝 Tesseract 5，並加入 `eng`、`chi_tra` 和／或 `chi_sim` 語言資料；一般圖片 PDF 不需要 Tesseract。
 
 ### macOS
 
 1. 雙擊 `AutoPage.command`。
 2. 首次執行時，在「系統設定 → 隱私權與安全性」允許終端機／Python使用「螢幕錄製」和「輔助功能」。
 3. 如果系統提示缺少 Tkinter，可按所用 Python 版本安裝 `python-tk`。
+4. 如需 OCR，可先執行 `brew install tesseract tesseract-lang`；一般圖片 PDF 不需要 Tesseract。
+
+完整步驟及語言包疑難排解請參閱 [`OCR_SETUP.md`](OCR_SETUP.md)。
 
 ### 命令列啟動
 
@@ -47,10 +60,11 @@ python autopage_gui.py
 ## 建議工作流程
 
 1. 開啟閱讀器並翻到起始頁。
-2. 在 AutoPage PDF 選擇輸出位置、翻頁方式、裁切及單／雙頁模式。
+2. 在 AutoPage PDF 選擇輸出位置、翻頁方式、裁切、單／雙頁及 OCR 輸出模式。
 3. 校準閱讀範圍。
 4. 點選「預覽裁切／分頁」；如有誤裁，改用手動邊距或中央分割。
-5. 點選「開始」，並在倒數期間點擊閱讀器取得焦點。
+5. 使用 OCR 時先按「檢查 OCR」，確認 Tesseract 與語言資料已就緒。
+6. 點選「開始」，並在倒數期間點擊閱讀器取得焦點。
 
 > Auto-crop 以截圖四角推算閱讀器背景；如果頁面填滿整個校準區域，或背景與頁面顏色非常接近，建議改用手動裁切。
 
@@ -58,8 +72,10 @@ python autopage_gui.py
 
 - `autopage_gui.py`：GUI、跨平台翻頁及擷取流程。
 - `image_processing.py`：裁切、書脊偵測、分頁及末頁差異計算。
+- `ocr_processing.py`：OCR 預處理、Tesseract 檢查、搜尋文字層及 TXT 匯出。
+- `OCR_SETUP.md`：Windows／macOS Tesseract 及語言包安裝指南。
 - `autopage_pdf.py`：相容舊啟動方式的入口。
-- `tests/`：不需要桌面環境的影像處理測試。
+- `tests/`：不需要桌面環境的影像、OCR PDF 及擷取流程測試。
 
 ## 使用守則
 

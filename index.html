@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AutoPage PDF v1.2.0 - 自動翻頁、裁切與雙頁分割</title>
+  <title>AutoPage PDF v1.3.0 - 自動翻頁、OCR 與可搜尋 PDF</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased">
 
   <!-- 導航列 -->
   <nav class="max-w-5xl mx-auto px-6 py-6 flex justify-between items-center">
-    <div class="font-bold text-xl tracking-tight text-blue-600">AutoPage PDF <span class="text-xs align-top">v1.2.0</span></div>
+    <div class="font-bold text-xl tracking-tight text-blue-600">AutoPage PDF <span class="text-xs align-top">v1.3.0</span></div>
     <div class="space-x-4 text-sm font-medium">
       <a href="#features" class="hover:text-blue-600">功能特色</a>
       <a href="#how-to-use" class="hover:text-blue-600">使用教學</a>
@@ -22,10 +22,10 @@
   <!-- Hero 區塊 -->
   <section class="max-w-4xl mx-auto px-6 py-16 text-center">
     <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
-      自動翻頁截圖、智慧裁切<br><span class="text-blue-600">雙頁分割後合併 PDF</span>
+      自動翻頁截圖、智慧裁切<br><span class="text-blue-600">OCR 可搜尋 PDF</span>
     </h1>
     <p class="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
-      專為個人研究、投影片筆記與畫面歸檔設計的跨平台工具。v1.2.0 新增 Auto-crop、雙頁書脊偵測、左右閱讀順序及正式擷取前預覽。
+      專為個人研究、投影片筆記與畫面歸檔設計的跨平台工具。v1.3.0 新增離線 OCR、繁簡中英文辨識、可搜尋文字層及純文字匯出。
     </p>
     <div class="mt-8 flex justify-center gap-4">
       <a href="#download" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition">立即下載</a>
@@ -46,8 +46,8 @@
         <p class="text-gray-600 text-sm">支援 0.5 至 2.0 秒微調，自訂總頁數，具備滑鼠甩至邊角緊急中止安全機制。</p>
       </div>
       <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-        <h3 class="font-bold text-lg mb-2 text-gray-800">無損 PDF 合併</h3>
-        <p class="text-gray-600 text-sm">擷取完成後自動按序編排並轉檔為標準 PDF，兼具高效率與原始畫質。</p>
+        <h3 class="font-bold text-lg mb-2 text-gray-800">離線 OCR 可搜尋 PDF</h3>
+        <p class="text-gray-600 text-sm">透過本機 Tesseract 加入隱藏文字層，支援繁簡中英文搜尋、選取及複製，也可同步匯出 TXT。</p>
       </div>
       <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
         <h3 class="font-bold text-lg mb-2 text-gray-800">Auto-crop 智慧裁切</h3>
@@ -79,14 +79,14 @@
         <span class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-600 font-bold rounded-full shrink-0">2</span>
         <div>
           <h4 class="font-semibold text-gray-800">設定參數並啟動</h4>
-          <p class="text-sm text-gray-600 mt-1">選擇單頁／雙頁、Auto-crop 或手動裁切；先按「預覽裁切／分頁」，確認結果後再開始。</p>
+          <p class="text-sm text-gray-600 mt-1">選擇單頁／雙頁、裁切及一般或 OCR 輸出；先預覽頁面，使用 OCR 時再按「檢查 OCR」。</p>
         </div>
       </div>
       <div class="p-5 bg-white border border-gray-200 rounded-lg flex items-start gap-4">
         <span class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-600 font-bold rounded-full shrink-0">3</span>
         <div>
           <h4 class="font-semibold text-gray-800">自動生成 PDF</h4>
-          <p class="text-sm text-gray-600 mt-1">在倒數期間切換至閱讀器。程式會自動翻頁、辨認末頁並無損合併；亦可隨時停止並輸出已完成頁面。</p>
+          <p class="text-sm text-gray-600 mt-1">在倒數期間切換至閱讀器。程式會自動翻頁、辨認末頁、逐頁辨識並輸出；亦可隨時停止並保留已完成頁面。</p>
         </div>
       </div>
     </div>
@@ -96,19 +96,19 @@
   <section id="download" class="bg-blue-50 py-16">
     <div class="max-w-3xl mx-auto px-6 text-center">
       <h2 class="text-3xl font-bold text-gray-900 mb-4">取得 AutoPage PDF</h2>
-      <p class="text-gray-600 mb-8">最新版本 v1.2.0，請依你的作業系統下載完整程式包：</p>
+      <p class="text-gray-600 mb-8">最新版本 v1.3.0，請依你的作業系統下載完整程式包：</p>
       
       <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
         <!-- Windows 下載 -->
-        <a href="downloads/AutoPage_PDF_Windows_v1.2.0.zip" download
+        <a href="downloads/AutoPage_PDF_Windows_v1.3.0.zip" download
            class="w-full sm:w-auto px-6 py-3.5 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 shadow-md transition flex items-center justify-center gap-2">
-          <span>下載 Windows v1.2.0 (.zip)</span>
+          <span>下載 Windows v1.3.0 (.zip)</span>
         </a>
 
         <!-- macOS 下載 -->
-        <a href="downloads/AutoPage_PDF_Mac_v1.2.0.zip" download
+        <a href="downloads/AutoPage_PDF_Mac_v1.3.0.zip" download
            class="w-full sm:w-auto px-6 py-3.5 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-900 shadow-md transition flex items-center justify-center gap-2">
-          <span>下載 macOS v1.2.0 (.zip)</span>
+          <span>下載 macOS v1.3.0 (.zip)</span>
         </a>
       </div>
 
@@ -116,12 +116,15 @@
         <a href="https://github.com/wongsir1011/autopage-pdf/blob/main/CHANGELOG.md"
            target="_blank"
            class="text-sm text-blue-600 hover:underline">
-          查看 v1.2.0 更新紀錄 →
+          查看 v1.3.0 更新紀錄 →
         </a>
       </div>
 
       <p class="text-xs text-gray-500 mt-4 max-w-lg mx-auto">
         ※ macOS 使用者解壓後首次執行，請按住 <code>Control</code> 鍵點選 App 選擇「打開」，並至「系統設定」>「隱私權與安全性」允許「螢幕錄製」與「輔助功能」權限。
+      </p>
+      <p class="text-xs text-gray-500 mt-2 max-w-lg mx-auto">
+        ※ OCR 為可選功能，需另行安裝 Tesseract 及所需語言包；未安裝時仍可建立一般圖片 PDF。
       </p>
     </div>
   </section>

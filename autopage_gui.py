@@ -1,7 +1,9 @@
-"""AutoPage PDF v1.2.0 graphical application."""
+"""AutoPage PDF v1.3.0 graphical application."""
 
+import json
 import os
 import platform
+from pathlib import Path
 import shutil
 import subprocess
 import tempfile
@@ -11,7 +13,6 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 from typing import Dict, List, Optional, Tuple
 
-import img2pdf
 import pyautogui
 from PIL import Image, ImageTk
 
@@ -20,9 +21,15 @@ from image_processing import (
     image_difference_percent,
     process_page,
 )
+from ocr_processing import (
+    OCRUnavailableError,
+    PDFBuildSummary,
+    check_ocr_status,
+    create_pdf_document,
+)
 
 
-__version__ = "1.2.0"
+__version__ = "1.3.0"
 
 pyautogui.FAILSAFE = True
 pyautogui.PAUSE = 0.1
@@ -43,6 +50,27 @@ PAGE_MODE_LABELS = {
 READING_ORDER_LABELS = {
     "由左至右": "ltr",
     "由右至左（日／直排書）": "rtl",
+}
+
+OCR_OUTPUT_LABELS = {
+    "一般圖片 PDF（不使用 OCR）": "image_pdf",
+    "可搜尋 PDF（隱藏文字層）": "searchable_pdf",
+    "可搜尋 PDF＋純文字 TXT": "searchable_pdf_txt",
+}
+
+OCR_LANGUAGE_LABELS = {
+    "繁體中文＋英文": "chi_tra+eng",
+    "簡體中文＋英文": "chi_sim+eng",
+    "繁體中文": "chi_tra",
+    "簡體中文": "chi_sim",
+    "英文": "eng",
+}
+
+OCR_ENHANCEMENT_LABELS = {
+    "自動增強（建議）": "contrast",
+    "灰階": "grayscale",
+    "黑白二值化": "binary",
+    "不處理": "none",
 }
 
 
@@ -98,13 +126,18 @@ class AutoPageApp:
     def __init__(self, root: tk.Tk) -> None:
         self.root = root
         self.root.title("AutoPage PDF v{0}".format(__version__))
-        self.root.geometry("690x790")
-        self.root.minsize(690, 790)
+        self.root.geometry("720x930")
+        self.root.minsize(720, 900)
         self.region: Optional[Tuple[int, int, int, int]] = None
         self.stop_event = threading.Event()
         self.capture_running = False
         self.margin_entries: List[ttk.Entry] = []
         self._create_widgets()
+        self._load_saved_settings()
+        self._on_crop_mode_change()
+        self._on_page_mode_change()
+        self._on_ocr_mode_change()
+        self._update_estimate()
         self.root.protocol("WM_DELETE_WINDOW", self._on_close)
 
     def _create_widgets(self) -> None:
@@ -120,7 +153,7 @@ class AutoPageApp:
         title.grid(row=0, column=0, sticky=tk.W)
         ttk.Label(
             container,
-            text="自動翻頁截圖、頁面裁切與雙頁分割",
+            text="自動翻頁截圖、頁面處理與 OCR 可搜尋 PDF",
             foreground="#555555",
         ).grid(row=1, column=0, sticky=tk.W, pady=(0, 10))
 
@@ -140,6 +173,7 @@ class AutoPageApp:
         self.entry_pages = ttk.Entry(basic, width=14)
         self.entry_pages.insert(0, "500")
         self.entry_pages.grid(row=1, column=1, sticky=tk.W, pady=4)
+        self.entry_pages.bind("<KeyRelease>", self._update_estimate)
 
         ttk.Label(basic, text="翻頁間隔：").grid(row=2, column=0, sticky=tk.W, pady=4)
         self.combo_delay = ttk.Combobox(
@@ -190,7 +224,7 @@ class AutoPageApp:
             variable=self.var_autostop,
         ).grid(row=4, column=0, columnspan=3, sticky=tk.W, pady=(5, 2))
 
-        processing = ttk.LabelFrame(container, text="v1.2 頁面處理", padding=10)
+        processing = ttk.LabelFrame(container, text="頁面處理", padding=10)
         processing.grid(row=3, column=0, sticky=tk.EW, pady=(10, 0))
         processing.columnconfigure(1, weight=1)
 
@@ -259,8 +293,70 @@ class AutoPageApp:
             row=4, column=1, columnspan=3, sticky=tk.EW, pady=4
         )
 
+        ocr = ttk.LabelFrame(container, text="v1.3 OCR 輸出", padding=10)
+        ocr.grid(row=4, column=0, sticky=tk.EW, pady=(10, 0))
+        ocr.columnconfigure(1, weight=1)
+
+        ttk.Label(ocr, text="輸出模式：").grid(
+            row=0, column=0, sticky=tk.W, pady=4
+        )
+        self.combo_ocr_output = ttk.Combobox(
+            ocr,
+            values=list(OCR_OUTPUT_LABELS.keys()),
+            state="readonly",
+        )
+        self.combo_ocr_output.set("一般圖片 PDF（不使用 OCR）")
+        self.combo_ocr_output.grid(row=0, column=1, columnspan=2, sticky=tk.EW, pady=4)
+        self.combo_ocr_output.bind("<<ComboboxSelected>>", self._on_ocr_mode_change)
+
+        ttk.Label(ocr, text="辨識語言：").grid(
+            row=1, column=0, sticky=tk.W, pady=4
+        )
+        self.combo_ocr_language = ttk.Combobox(
+            ocr,
+            values=list(OCR_LANGUAGE_LABELS.keys()),
+            state="disabled",
+        )
+        self.combo_ocr_language.set("繁體中文＋英文")
+        self.combo_ocr_language.grid(row=1, column=1, sticky=tk.EW, pady=4)
+        self.btn_check_ocr = ttk.Button(
+            ocr,
+            text="檢查 OCR",
+            command=self.check_ocr_installation,
+            state=tk.DISABLED,
+        )
+        self.btn_check_ocr.grid(row=1, column=2, padx=(6, 0), pady=4)
+
+        ttk.Label(ocr, text="影像增強：").grid(
+            row=2, column=0, sticky=tk.W, pady=4
+        )
+        self.combo_ocr_enhancement = ttk.Combobox(
+            ocr,
+            values=list(OCR_ENHANCEMENT_LABELS.keys()),
+            state="disabled",
+        )
+        self.combo_ocr_enhancement.set("自動增強（建議）")
+        self.combo_ocr_enhancement.grid(
+            row=2, column=1, columnspan=2, sticky=tk.EW, pady=4
+        )
+
+        self.var_completion_sound = tk.BooleanVar(value=True)
+        ttk.Checkbutton(
+            ocr,
+            text="完成後播放提示音",
+            variable=self.var_completion_sound,
+        ).grid(row=3, column=0, columnspan=2, sticky=tk.W, pady=(4, 0))
+        self.lbl_estimate = ttk.Label(ocr, text="預計最多輸出 500 頁")
+        self.lbl_estimate.grid(row=3, column=2, sticky=tk.E, pady=(4, 0))
+        self.lbl_ocr_status = ttk.Label(
+            ocr,
+            text="OCR 未啟用",
+            foreground="#666666",
+        )
+        self.lbl_ocr_status.grid(row=4, column=0, columnspan=3, sticky=tk.W, pady=(4, 0))
+
         controls = ttk.Frame(container)
-        controls.grid(row=4, column=0, sticky=tk.EW, pady=(10, 0))
+        controls.grid(row=5, column=0, sticky=tk.EW, pady=(10, 0))
         for index in range(3):
             controls.columnconfigure(index, weight=1)
 
@@ -283,10 +379,10 @@ class AutoPageApp:
         self.lbl_region = ttk.Label(
             container, text="截圖範圍：尚未校準", foreground="gray"
         )
-        self.lbl_region.grid(row=5, column=0, pady=(8, 2))
+        self.lbl_region.grid(row=6, column=0, pady=(8, 2))
 
         action_frame = ttk.Frame(container)
-        action_frame.grid(row=6, column=0, sticky=tk.EW, pady=(8, 0))
+        action_frame.grid(row=7, column=0, sticky=tk.EW, pady=(8, 0))
         action_frame.columnconfigure(0, weight=3)
         action_frame.columnconfigure(1, weight=1)
         self.btn_start = ttk.Button(
@@ -305,11 +401,11 @@ class AutoPageApp:
         self.btn_stop.grid(row=0, column=1, sticky=tk.EW, padx=(4, 0))
 
         self.lbl_status = ttk.Label(container, text="狀態：準備就緒")
-        self.lbl_status.grid(row=7, column=0, sticky=tk.W, pady=(10, 2))
+        self.lbl_status.grid(row=8, column=0, sticky=tk.W, pady=(10, 2))
         self.progress = ttk.Progressbar(
             container, orient=tk.HORIZONTAL, mode="determinate"
         )
-        self.progress.grid(row=8, column=0, sticky=tk.EW, pady=4)
+        self.progress.grid(row=9, column=0, sticky=tk.EW, pady=4)
 
         ttk.Label(
             container,
@@ -319,7 +415,7 @@ class AutoPageApp:
             ),
             foreground="#b00020",
             justify=tk.LEFT,
-        ).grid(row=9, column=0, sticky=tk.W, pady=(4, 0))
+        ).grid(row=10, column=0, sticky=tk.W, pady=(4, 0))
 
         self._on_crop_mode_change()
 
@@ -347,6 +443,167 @@ class AutoPageApp:
         self.combo_reading_order.configure(
             state="disabled" if single else "readonly"
         )
+        self._update_estimate()
+
+    def _on_ocr_mode_change(self, _event: object = None) -> None:
+        enabled = OCR_OUTPUT_LABELS.get(self.combo_ocr_output.get()) != "image_pdf"
+        state = "readonly" if enabled else "disabled"
+        self.combo_ocr_language.configure(state=state)
+        self.combo_ocr_enhancement.configure(state=state)
+        self.btn_check_ocr.configure(state=tk.NORMAL if enabled else tk.DISABLED)
+        self.lbl_ocr_status.configure(
+            text="按「檢查 OCR」確認 Tesseract 與語言包。" if enabled else "OCR 未啟用",
+            foreground="#9a6700" if enabled else "#666666",
+        )
+
+    def _update_estimate(self, _event: object = None) -> None:
+        try:
+            captures = max(0, int(self.entry_pages.get().strip() or "0"))
+        except ValueError:
+            captures = 0
+        page_mode = PAGE_MODE_LABELS.get(self.combo_page_mode.get(), "single")
+        estimated_pages = captures * (2 if page_mode != "single" else 1)
+        self.lbl_estimate.configure(
+            text="預計最多輸出 {0} 頁".format(estimated_pages)
+        )
+
+    @staticmethod
+    def _settings_path() -> Path:
+        return Path.home() / ".autopage_pdf" / "settings.json"
+
+    def _load_saved_settings(self) -> None:
+        try:
+            with self._settings_path().open("r", encoding="utf-8") as settings_file:
+                saved = json.load(settings_file)
+        except (OSError, ValueError, TypeError):
+            return
+        if not isinstance(saved, dict):
+            return
+
+        entry_values = (
+            (self.entry_pdf, "output_path"),
+            (self.entry_pages, "pages"),
+        )
+        for entry, key in entry_values:
+            value = saved.get(key)
+            if value is not None:
+                entry.delete(0, tk.END)
+                entry.insert(0, str(value))
+
+        combo_values = (
+            (self.combo_delay, "delay", None),
+            (self.combo_action, "action", None),
+            (self.combo_crop, "crop", CROP_MODE_LABELS),
+            (self.combo_page_mode, "page_mode", PAGE_MODE_LABELS),
+            (self.combo_reading_order, "reading_order", READING_ORDER_LABELS),
+            (self.combo_ocr_output, "ocr_output", OCR_OUTPUT_LABELS),
+            (self.combo_ocr_language, "ocr_language", OCR_LANGUAGE_LABELS),
+            (
+                self.combo_ocr_enhancement,
+                "ocr_enhancement",
+                OCR_ENHANCEMENT_LABELS,
+            ),
+        )
+        for combo, key, valid_mapping in combo_values:
+            value = saved.get(key)
+            if value is None:
+                continue
+            text_value = str(value)
+            if valid_mapping is None:
+                if text_value in tuple(combo["values"]):
+                    combo.set(text_value)
+            elif text_value in valid_mapping:
+                combo.set(text_value)
+
+        numeric_entries = [
+            self.spin_tolerance,
+            self.spin_padding,
+        ] + self.margin_entries
+        numeric_keys = [
+            "crop_tolerance",
+            "crop_padding",
+            "margin_left",
+            "margin_top",
+            "margin_right",
+            "margin_bottom",
+        ]
+        for entry, key in zip(numeric_entries, numeric_keys):
+            value = saved.get(key)
+            if value is not None:
+                entry.configure(state="normal")
+                entry.delete(0, tk.END)
+                entry.insert(0, str(value))
+        if "autostop" in saved:
+            self.var_autostop.set(bool(saved["autostop"]))
+        if "completion_sound" in saved:
+            self.var_completion_sound.set(bool(saved["completion_sound"]))
+
+    def _save_settings(self) -> None:
+        settings = {
+            "output_path": self.entry_pdf.get(),
+            "pages": self.entry_pages.get(),
+            "delay": self.combo_delay.get(),
+            "action": self.combo_action.get(),
+            "autostop": self.var_autostop.get(),
+            "crop": self.combo_crop.get(),
+            "crop_tolerance": self.spin_tolerance.get(),
+            "crop_padding": self.spin_padding.get(),
+            "margin_left": self.margin_entries[0].get(),
+            "margin_top": self.margin_entries[1].get(),
+            "margin_right": self.margin_entries[2].get(),
+            "margin_bottom": self.margin_entries[3].get(),
+            "page_mode": self.combo_page_mode.get(),
+            "reading_order": self.combo_reading_order.get(),
+            "ocr_output": self.combo_ocr_output.get(),
+            "ocr_language": self.combo_ocr_language.get(),
+            "ocr_enhancement": self.combo_ocr_enhancement.get(),
+            "completion_sound": self.var_completion_sound.get(),
+        }
+        try:
+            path = self._settings_path()
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with path.open("w", encoding="utf-8", newline="\n") as settings_file:
+                json.dump(settings, settings_file, ensure_ascii=False, indent=2)
+                settings_file.write("\n")
+        except OSError:
+            pass
+
+    @staticmethod
+    def _ocr_install_help() -> str:
+        if platform.system() == "Darwin":
+            return "macOS 可使用 Homebrew 安裝：brew install tesseract tesseract-lang"
+        if platform.system() == "Windows":
+            return (
+                "Windows 請安裝 Tesseract 5，並在安裝時加入 Chinese Traditional／"
+                "Chinese Simplified 語言資料。"
+            )
+        return "請使用系統套件管理員安裝 Tesseract 及所需語言資料。"
+
+    def check_ocr_installation(self) -> None:
+        language = OCR_LANGUAGE_LABELS.get(
+            self.combo_ocr_language.get(), "chi_tra+eng"
+        )
+        self.btn_check_ocr.configure(state=tk.DISABLED)
+        self.lbl_ocr_status.configure(text="正在檢查 Tesseract…", foreground="#666666")
+
+        def worker() -> None:
+            status = check_ocr_status(language)
+
+            def finish() -> None:
+                self.btn_check_ocr.configure(state=tk.NORMAL)
+                self.lbl_ocr_status.configure(
+                    text=status.message,
+                    foreground="green" if status.available else "#b00020",
+                )
+                if not status.available:
+                    messagebox.showwarning(
+                        "OCR 尚未就緒",
+                        status.message + "\n\n" + self._ocr_install_help(),
+                    )
+
+            self.root.after(0, finish)
+
+        threading.Thread(target=worker, daemon=True).start()
 
     def log(self, text: str) -> None:
         self.root.after(0, lambda: self.lbl_status.configure(text="狀態：" + text))
@@ -575,6 +832,18 @@ class AutoPageApp:
         if parent and not os.path.isdir(parent):
             raise ValueError("輸出資料夾不存在：{0}".format(parent))
 
+        ocr_output = OCR_OUTPUT_LABELS[self.combo_ocr_output.get()]
+        ocr_language = OCR_LANGUAGE_LABELS[self.combo_ocr_language.get()]
+        ocr_enhancement = OCR_ENHANCEMENT_LABELS[
+            self.combo_ocr_enhancement.get()
+        ]
+        if ocr_output != "image_pdf":
+            ocr_status = check_ocr_status(ocr_language)
+            if not ocr_status.available:
+                raise ValueError(
+                    ocr_status.message + "\n\n" + self._ocr_install_help()
+                )
+
         settings = self._processing_settings()
         settings.update(
             {
@@ -583,6 +852,10 @@ class AutoPageApp:
                 "action": self.combo_action.get(),
                 "autostop": self.var_autostop.get(),
                 "output_path": output_path,
+                "ocr_output": ocr_output,
+                "ocr_language": ocr_language,
+                "ocr_enhancement": ocr_enhancement,
+                "completion_sound": self.var_completion_sound.get(),
             }
         )
         return settings
@@ -596,6 +869,8 @@ class AutoPageApp:
 
         self.stop_event.clear()
         self.capture_running = True
+        self._completion_sound = bool(settings["completion_sound"])
+        self._save_settings()
         self.btn_start.configure(state=tk.DISABLED)
         self.btn_calibrate.configure(state=tk.DISABLED)
         self.btn_preview.configure(state=tk.DISABLED)
@@ -621,6 +896,7 @@ class AutoPageApp:
         output_page = 0
         completion_note = ""
         error_message: Optional[str] = None
+        pdf_summary: Optional[PDFBuildSummary] = None
 
         try:
             for remaining in range(5, 0, -1):
@@ -689,11 +965,42 @@ class AutoPageApp:
         output_path = str(settings["output_path"])
         if image_paths:
             try:
-                self.log("正在無損合併 {0} 頁 PDF…".format(len(image_paths)))
-                with open(output_path, "wb") as output_file:
-                    output_file.write(img2pdf.convert(image_paths))
+                ocr_output = str(settings.get("ocr_output", "image_pdf"))
+                searchable = ocr_output != "image_pdf"
+                if searchable:
+                    self.log("正在辨識並建立 {0} 頁可搜尋 PDF…".format(len(image_paths)))
+                else:
+                    self.log("正在無損合併 {0} 頁 PDF…".format(len(image_paths)))
+                self._set_progress(0, len(image_paths))
+
+                def pdf_progress(
+                    current: int, total: int, page_error: Optional[str]
+                ) -> None:
+                    if page_error:
+                        self.log(
+                            "OCR 第 {0}/{1} 頁失敗，已保留原圖頁面。".format(
+                                current, total
+                            )
+                        )
+                    else:
+                        self.log(
+                            "正在建立 PDF：第 {0}/{1} 頁".format(current, total)
+                        )
+                    self._set_progress(current, total)
+
+                pdf_summary = create_pdf_document(
+                    image_paths,
+                    output_path,
+                    searchable=searchable,
+                    language=str(settings.get("ocr_language", "chi_tra+eng")),
+                    enhancement=str(settings.get("ocr_enhancement", "contrast")),
+                    write_text=ocr_output == "searchable_pdf_txt",
+                    progress_callback=pdf_progress if searchable else None,
+                )
+            except OCRUnavailableError as error:
+                error_message = "OCR 無法使用：{0}".format(error)
             except Exception as error:
-                error_message = "PDF 合併失敗：{0}".format(error)
+                error_message = "PDF 建立失敗：{0}".format(error)
 
         if error_message:
             self.root.after(
@@ -710,6 +1017,12 @@ class AutoPageApp:
         shutil.rmtree(temp_dir, ignore_errors=True)
         if image_paths:
             detail = completion_note or "已達設定的最大畫面數。"
+            if pdf_summary and pdf_summary.failed_pages:
+                detail += "\nOCR 失敗頁面（仍已保留原圖）：{0}".format(
+                    ", ".join(str(page) for page in pdf_summary.failed_pages)
+                )
+            if pdf_summary and pdf_summary.text_output_path:
+                detail += "\n純文字檔：{0}".format(pdf_summary.text_output_path)
             self.root.after(
                 0,
                 self._finish_capture,
@@ -747,6 +1060,11 @@ class AutoPageApp:
             self.lbl_status.configure(
                 text="狀態：完成，共輸出 {0} 頁。".format(page_count)
             )
+            if getattr(self, "_completion_sound", False):
+                try:
+                    self.root.bell()
+                except tk.TclError:
+                    pass
             messagebox.showinfo(
                 "完成",
                 "PDF 生成成功！\n\n頁數：{0}\n檔案：{1}\n\n{2}".format(
@@ -770,6 +1088,7 @@ class AutoPageApp:
             if not close:
                 return
             self.stop_event.set()
+        self._save_settings()
         self.root.destroy()
 
 
