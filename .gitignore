@@ -1,7 +1,10 @@
-temp_screenshots/
-*.pdf
 __pycache__/
-dist/
-build/
-*.spec
+*.py[cod]
+*.pdf
 .DS_Store
+myenv/
+venv_win/
+build/
+dist/
+*.spec
+temp_screenshots/
