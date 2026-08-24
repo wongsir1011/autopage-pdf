@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AutoPage PDF - 螢幕自動翻頁截圖與 PDF 合併工具</title>
+  <title>AutoPage PDF v1.2.0 - 自動翻頁、裁切與雙頁分割</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased">
 
   <!-- 導航列 -->
   <nav class="max-w-5xl mx-auto px-6 py-6 flex justify-between items-center">
-    <div class="font-bold text-xl tracking-tight text-blue-600">AutoPage PDF</div>
+    <div class="font-bold text-xl tracking-tight text-blue-600">AutoPage PDF <span class="text-xs align-top">v1.2.0</span></div>
     <div class="space-x-4 text-sm font-medium">
       <a href="#features" class="hover:text-blue-600">功能特色</a>
       <a href="#how-to-use" class="hover:text-blue-600">使用教學</a>
@@ -22,10 +22,10 @@
   <!-- Hero 區塊 -->
   <section class="max-w-4xl mx-auto px-6 py-16 text-center">
     <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
-      自動化螢幕翻頁截圖<br><span class="text-blue-600">一鍵合併為清晰 PDF</span>
+      自動翻頁截圖、智慧裁切<br><span class="text-blue-600">雙頁分割後合併 PDF</span>
     </h1>
     <p class="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
-      專為個人研究、投影片筆記與畫面歸檔設計的輕量級自動化工具，支援自訂範圍、0.5 ~ 2.0 秒定時翻頁與高品質無損 PDF 輸出。
+      專為個人研究、投影片筆記與畫面歸檔設計的跨平台工具。v1.2.0 新增 Auto-crop、雙頁書脊偵測、左右閱讀順序及正式擷取前預覽。
     </p>
     <div class="mt-8 flex justify-center gap-4">
       <a href="#download" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition">立即下載</a>
@@ -36,7 +36,7 @@
   <!-- 功能特點 -->
   <section id="features" class="max-w-5xl mx-auto px-6 py-12">
     <h2 class="text-2xl font-bold text-center text-gray-900 mb-8">核心功能</h2>
-    <div class="grid md:grid-cols-3 gap-6">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
         <h3 class="font-bold text-lg mb-2 text-gray-800">精準範圍校準</h3>
         <p class="text-gray-600 text-sm">提供互動式滑鼠定位，自動辨識左上與右下座標，僅擷取指定內容區塊。</p>
@@ -48,6 +48,18 @@
       <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
         <h3 class="font-bold text-lg mb-2 text-gray-800">無損 PDF 合併</h3>
         <p class="text-gray-600 text-sm">擷取完成後自動按序編排並轉檔為標準 PDF，兼具高效率與原始畫質。</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <h3 class="font-bold text-lg mb-2 text-gray-800">Auto-crop 智慧裁切</h3>
+        <p class="text-gray-600 text-sm">自動偵測頁面與閱讀器背景邊界，亦可手動輸入四邊像素，減少工具列與外圍留白。</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <h3 class="font-bold text-lg mb-2 text-gray-800">雙頁自動分割</h3>
+        <p class="text-gray-600 text-sm">自動尋找中央書脊或留白，支援正中央分割，以及由左至右或由右至左輸出。</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <h3 class="font-bold text-lg mb-2 text-gray-800">處理結果預覽</h3>
+        <p class="text-gray-600 text-sm">開始前比較原始畫面與輸出頁面，確認裁切邊界、分割位置及實際像素尺寸。</p>
       </div>
     </div>
   </section>
@@ -67,14 +79,14 @@
         <span class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-600 font-bold rounded-full shrink-0">2</span>
         <div>
           <h4 class="font-semibold text-gray-800">設定參數並啟動</h4>
-          <p class="text-sm text-gray-600 mt-1">輸入預計截圖頁數與翻頁間隔（0.5 ~ 2.0 秒），點擊開始後在 5 秒內切換至閱讀視窗，軟體將自動循環擷取與翻頁。</p>
+          <p class="text-sm text-gray-600 mt-1">選擇單頁／雙頁、Auto-crop 或手動裁切；先按「預覽裁切／分頁」，確認結果後再開始。</p>
         </div>
       </div>
       <div class="p-5 bg-white border border-gray-200 rounded-lg flex items-start gap-4">
         <span class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-600 font-bold rounded-full shrink-0">3</span>
         <div>
           <h4 class="font-semibold text-gray-800">自動生成 PDF</h4>
-          <p class="text-sm text-gray-600 mt-1">擷取完成後自動無損合併為單一 PDF 文件，並自動清理暫存圖片。</p>
+          <p class="text-sm text-gray-600 mt-1">在倒數期間切換至閱讀器。程式會自動翻頁、辨認末頁並無損合併；亦可隨時停止並輸出已完成頁面。</p>
         </div>
       </div>
     </div>
@@ -84,27 +96,27 @@
   <section id="download" class="bg-blue-50 py-16">
     <div class="max-w-3xl mx-auto px-6 text-center">
       <h2 class="text-3xl font-bold text-gray-900 mb-4">取得 AutoPage PDF</h2>
-      <p class="text-gray-600 mb-8">完全免費且開源，請依你的作業系統選擇版本下載：</p>
+      <p class="text-gray-600 mb-8">最新版本 v1.2.0，請依你的作業系統下載完整程式包：</p>
       
       <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
         <!-- Windows 下載 -->
-        <a href="https://github.com/wongsir1011/autopage-pdf/releases/latest/download/autopage_gui.exe" 
+        <a href="downloads/AutoPage_PDF_Windows_v1.2.0.zip" download
            class="w-full sm:w-auto px-6 py-3.5 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 shadow-md transition flex items-center justify-center gap-2">
-          <span>下載 Windows 版 (.exe)</span>
+          <span>下載 Windows v1.2.0 (.zip)</span>
         </a>
 
         <!-- macOS 下載 -->
-        <a href="https://github.com/wongsir1011/autopage-pdf/releases/latest/download/AutoPage_PDF_Mac.zip" 
+        <a href="downloads/AutoPage_PDF_Mac_v1.2.0.zip" download
            class="w-full sm:w-auto px-6 py-3.5 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-900 shadow-md transition flex items-center justify-center gap-2">
-          <span>下載 macOS 版 (.zip)</span>
+          <span>下載 macOS v1.2.0 (.zip)</span>
         </a>
       </div>
 
       <div class="mt-6">
-        <a href="https://github.com/wongsir1011/autopage-pdf/releases/latest" 
+        <a href="https://github.com/wongsir1011/autopage-pdf/blob/main/CHANGELOG.md"
            target="_blank"
            class="text-sm text-blue-600 hover:underline">
-          查看所有版本與更新紀錄 (GitHub Releases) $\rightarrow$
+          查看 v1.2.0 更新紀錄 →
         </a>
       </div>
 
