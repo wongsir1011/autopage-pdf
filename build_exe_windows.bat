@@ -1,7 +1,7 @@
 @echo off
 setlocal EnableExtensions
 cd /d "%~dp0"
-title AutoPage PDF v1.2.0 Builder
+title AutoPage PDF v1.3.0 Builder
 
 set "PYTHON_CMD="
 py -3 --version >nul 2>&1
@@ -29,11 +29,11 @@ if errorlevel 1 goto :error
 "venv_win\Scripts\python.exe" -m pip install -r "requirements-dev.txt"
 if errorlevel 1 goto :error
 
-"venv_win\Scripts\python.exe" -m PyInstaller --onefile --windowed --name "AutoPage_PDF_v1.2.0" --clean "autopage_gui.py"
+"venv_win\Scripts\python.exe" -m PyInstaller --onefile --windowed --name "AutoPage_PDF_v1.3.0" --clean "autopage_gui.py"
 if errorlevel 1 goto :error
 
 echo.
-echo Build completed: dist\AutoPage_PDF_v1.2.0.exe
+echo Build completed: dist\AutoPage_PDF_v1.3.0.exe
 pause
 exit /b 0
 

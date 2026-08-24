@@ -1,7 +1,7 @@
 @echo off
 setlocal EnableExtensions
 cd /d "%~dp0"
-title AutoPage PDF v1.2.0
+title AutoPage PDF v1.3.0
 
 set "PYTHON_CMD="
 py -3 --version >nul 2>&1
@@ -24,16 +24,16 @@ if not exist "venv_win\Scripts\python.exe" (
     if errorlevel 1 goto :error
 )
 
-if not exist "venv_win\.autopage_v1_2_0_ready" (
+if not exist "venv_win\.autopage_v1_3_0_ready" (
     echo Installing required packages. Internet access is needed this time...
     "venv_win\Scripts\python.exe" -m pip install --upgrade pip
     if errorlevel 1 goto :error
     "venv_win\Scripts\python.exe" -m pip install -r "requirements.txt"
     if errorlevel 1 goto :error
-    type nul > "venv_win\.autopage_v1_2_0_ready"
+    type nul > "venv_win\.autopage_v1_3_0_ready"
 )
 
-echo Starting AutoPage PDF v1.2.0...
+echo Starting AutoPage PDF v1.3.0...
 start "" "venv_win\Scripts\pythonw.exe" "autopage_gui.py"
 exit /b 0
 

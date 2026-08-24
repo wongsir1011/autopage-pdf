@@ -6,6 +6,7 @@ import types
 import unittest
 
 from PIL import Image
+from pypdf import PdfReader
 
 
 class FakeFailSafeException(Exception):
@@ -33,10 +34,7 @@ class FakePyAutoGUI(types.ModuleType):
 
 
 fake_pyautogui = FakePyAutoGUI()
-fake_img2pdf = types.ModuleType("img2pdf")
-fake_img2pdf.convert = lambda paths: b"%PDF-test-" + str(len(paths)).encode("ascii")
 sys.modules["pyautogui"] = fake_pyautogui
-sys.modules["img2pdf"] = fake_img2pdf
 
 import autopage_gui  # noqa: E402  (desktop dependencies are stubbed above)
 
@@ -99,8 +97,7 @@ class CaptureWorkflowTests(unittest.TestCase):
                 autopage_gui.time.sleep = original_sleep
 
             self.assertTrue(os.path.exists(output_path))
-            with open(output_path, "rb") as output_file:
-                self.assertEqual(output_file.read(), b"%PDF-test-2")
+            self.assertEqual(len(PdfReader(output_path).pages), 2)
 
         self.assertTrue(result["success"])
         self.assertEqual(result["page_count"], 2)
