@@ -248,3 +248,40 @@ def image_difference_percent(
     mean = ImageStat.Stat(difference).mean[0]
     return mean / 255.0 * 100.0
 
+
+def image_change_metrics(
+    first: Image.Image,
+    second: Image.Image,
+    max_compare_size: int = 640,
+    pixel_tolerance: int = 12,
+) -> Tuple[float, float]:
+    """Return mean difference and meaningfully changed-pixel percentages.
+
+    A mean-only score is easily diluted by the large white background of an
+    ebook page.  The changed-pixel score preserves small text differences and
+    is therefore safer for end-page detection.
+    """
+
+    if first.size != second.size:
+        return (100.0, 100.0)
+
+    width, height = first.size
+    if width < 1 or height < 1:
+        return (100.0, 100.0)
+
+    scale = min(1.0, float(max_compare_size) / float(max(width, height)))
+    compare_size = (
+        max(1, int(round(width * scale))),
+        max(1, int(round(height * scale))),
+    )
+    first_gray = first.convert("L").resize(compare_size, RESAMPLE_LANCZOS)
+    second_gray = second.convert("L").resize(compare_size, RESAMPLE_LANCZOS)
+    difference = ImageChops.difference(first_gray, second_gray)
+    histogram = difference.histogram()
+    pixel_count = compare_size[0] * compare_size[1]
+    mean_difference = sum(value * count for value, count in enumerate(histogram))
+    changed_pixels = sum(histogram[max(0, int(pixel_tolerance) + 1) :])
+    return (
+        mean_difference / float(pixel_count) / 255.0 * 100.0,
+        changed_pixels / float(pixel_count) * 100.0,
+    )

@@ -3,6 +3,7 @@ __pycache__/
 *.pdf
 .DS_Store
 myenv/
+.venv/
 venv_win/
 build/
 dist/

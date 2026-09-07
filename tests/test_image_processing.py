@@ -6,6 +6,7 @@ from image_processing import (
     CropMargins,
     auto_crop_image,
     find_split_x,
+    image_change_metrics,
     image_difference_percent,
     manual_crop_image,
     process_page,
@@ -93,6 +94,21 @@ class DifferenceTests(unittest.TestCase):
         second = first.copy()
         ImageDraw.Draw(second).rectangle((20, 20, 280, 180), fill="black")
         self.assertGreater(image_difference_percent(first, second), 10.0)
+
+    def test_sparse_text_change_is_not_diluted_by_white_background(self):
+        first = Image.new("RGB", (1200, 1600), "white")
+        second = first.copy()
+        first_draw = ImageDraw.Draw(first)
+        second_draw = ImageDraw.Draw(second)
+        for line in range(1):
+            y = 150 + line * 30
+            first_draw.text((140, y), "Original page line {0}".format(line), fill="#222")
+            second_draw.text((140, y), "Different page row {0}".format(line), fill="#222")
+
+        mean_difference, changed_pixels = image_change_metrics(first, second)
+
+        self.assertLess(mean_difference, 0.35)
+        self.assertGreater(changed_pixels, 0.02)
 
 
 if __name__ == "__main__":
