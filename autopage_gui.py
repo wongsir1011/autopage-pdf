@@ -1,4 +1,4 @@
-"""AutoPage PDF v1.3.0 graphical application."""
+"""AutoPage PDF v1.3.1 graphical application."""
 
 import json
 import os
@@ -18,7 +18,7 @@ from PIL import Image, ImageTk
 
 from image_processing import (
     CropMargins,
-    image_difference_percent,
+    image_change_metrics,
     process_page,
 )
 from ocr_processing import (
@@ -29,7 +29,11 @@ from ocr_processing import (
 )
 
 
-__version__ = "1.3.0"
+__version__ = "1.3.1"
+
+END_PAGE_CONFIRMATIONS = 4
+DUPLICATE_MEAN_THRESHOLD_PERCENT = 0.08
+DUPLICATE_CHANGED_PIXEL_THRESHOLD_PERCENT = 0.02
 
 pyautogui.FAILSAFE = True
 pyautogui.PAUSE = 0.1
@@ -77,13 +81,20 @@ OCR_ENHANCEMENT_LABELS = {
 def is_image_duplicate(
     first: Optional[Image.Image],
     second: Optional[Image.Image],
-    threshold_percent: float = 0.35,
+    threshold_percent: float = DUPLICATE_MEAN_THRESHOLD_PERCENT,
+    changed_pixel_threshold_percent: float = (
+        DUPLICATE_CHANGED_PIXEL_THRESHOLD_PERCENT
+    ),
 ) -> bool:
-    """Return whether two captures are visually close enough to be the same page."""
+    """Return whether two captures are safely close enough to be the same page."""
 
     if first is None or second is None or first.size != second.size:
         return False
-    return image_difference_percent(first, second) <= threshold_percent
+    mean_difference, changed_pixels = image_change_metrics(first, second)
+    return (
+        mean_difference <= threshold_percent
+        and changed_pixels <= changed_pixel_threshold_percent
+    )
 
 
 def trigger_turn_page(action: str, click_x: int = 0, click_y: int = 0) -> None:
@@ -220,7 +231,7 @@ class AutoPageApp:
         self.var_autostop = tk.BooleanVar(value=True)
         ttk.Checkbutton(
             basic,
-            text="智慧末頁停止（連續兩次畫面不再變動）",
+            text="智慧末頁停止（嚴格比對並重試翻頁）",
             variable=self.var_autostop,
         ).grid(row=4, column=0, columnspan=3, sticky=tk.W, pady=(5, 2))
 
@@ -920,11 +931,11 @@ class AutoPageApp:
                 if duplicate:
                     duplicate_count += 1
                     self.log(
-                        "畫面重複確認 {0}/2；正在檢查是否已到末頁…".format(
-                            duplicate_count
+                        "畫面未變，重試翻頁 {0}/{1}；正在檢查是否已到末頁…".format(
+                            duplicate_count, END_PAGE_CONFIRMATIONS
                         )
                     )
-                    if duplicate_count >= 2:
+                    if duplicate_count >= END_PAGE_CONFIRMATIONS:
                         completion_note = "已智慧識別最後一頁。"
                         break
                 else:

@@ -52,7 +52,14 @@ class CaptureWorkflowTests(unittest.TestCase):
         for x in range(20, 100):
             for y in range(20, 60):
                 second.putpixel((x, y), (0, 0, 0))
-        fake_pyautogui.screenshots = [first, second, second, second]
+        fake_pyautogui.screenshots = [
+            first,
+            second,
+            second,
+            second,
+            second,
+            second,
+        ]
 
     def test_duplicate_end_page_is_not_added_to_pdf(self):
         app = autopage_gui.AutoPageApp.__new__(autopage_gui.AutoPageApp)
@@ -102,7 +109,21 @@ class CaptureWorkflowTests(unittest.TestCase):
         self.assertTrue(result["success"])
         self.assertEqual(result["page_count"], 2)
         self.assertIn("最後一頁", result["detail"])
-        self.assertEqual(len(fake_pyautogui.turns), 3)
+        self.assertEqual(len(fake_pyautogui.turns), 5)
+
+    def test_similar_text_pages_do_not_trigger_false_end_page(self):
+        first = Image.new("RGB", (1200, 1600), "white")
+        second = first.copy()
+        from PIL import ImageDraw
+
+        first_draw = ImageDraw.Draw(first)
+        second_draw = ImageDraw.Draw(second)
+        for line in range(1):
+            y = 150 + line * 30
+            first_draw.text((140, y), "Original page line {0}".format(line), fill="#222")
+            second_draw.text((140, y), "Different page row {0}".format(line), fill="#222")
+
+        self.assertFalse(autopage_gui.is_image_duplicate(first, second))
 
 
 if __name__ == "__main__":
