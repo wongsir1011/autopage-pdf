@@ -2,6 +2,15 @@
 
 跨平台（Windows／macOS）的本機螢幕自動翻頁截圖與無損 PDF 合併工具。
 
+## 專案狀態
+
+- 穩定版本：**v1.3.1**
+- 穩定分支：`main`
+- 正式網站：https://autopage-pdf-seven.vercel.app/
+- 開發狀態、部署基準、已知管理問題及下一步：請參閱 [`PROJECT.md`](PROJECT.md)
+
+> AI Agent 或協作者修改程式前，請先閱讀 `README.md`、`PROJECT.md`、`CHANGELOG.md` 及相關原始碼。
+
 ## v1.3.1 修正
 
 - **Windows 智慧末頁修正**：避免白底、版式相近的文字頁被誤判為相同畫面，導致第二頁提早停止。
