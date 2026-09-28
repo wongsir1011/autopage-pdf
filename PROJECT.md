@@ -13,6 +13,7 @@
 - Canonical repository: https://github.com/wongsir1011/autopage-pdf
 - Stable source branch: `main`
 - Rule: `main` 只代表已測試及可部署的穩定原始碼
+- Branch protection: `main` 必須經 pull request，且 Python 3.8、3.11、3.14 三組 GitHub Actions 測試通過；合併前須與最新 `main` 同步。管理員亦不可繞過，強制推送及刪除已禁止。
 - Latest verified stable commit: `cff0fd0472fb4632a3c8fa3f3230782e76ba6925`
 - Latest verified date: 2026-09-29
 - Latest release: [v1.3.1](https://github.com/wongsir1011/autopage-pdf/releases/tag/v1.3.1), tag at `daaff5ed00102fd7cfced613091a2ef4c7735020`
@@ -90,9 +91,7 @@ Any future change should preserve this baseline or explain the exception in the 
 
 These are maintenance items, not confirmed application bugs:
 
-1. Merged branches `docs/standardize-project-records`, `feature/v1.2.0`, `feature/v1.3.0` and `fix/windows-smart-end-page` remain in the repository.
-2. `main` is not currently protected.
-3. Vercel and GitHub Pages both publish the site; Vercel is treated as primary and GitHub Pages as secondary until a different decision is recorded.
+1. Vercel and GitHub Pages both publish the site; Vercel is treated as primary and GitHub Pages as secondary until a different decision is recorded.
 
 ## Current Work
 
@@ -100,10 +99,8 @@ Complete post-release maintenance and establish AutoPage as the reference workfl
 
 ## Next Actions
 
-1. Protect `main` and require successful tests before merge.
-2. Remove or archive merged branches after confirming they are no longer needed.
-3. Record AutoPage in the central Project Registry.
-4. Open separate branches for any future feature or bug fix.
+1. Record AutoPage in the central Project Registry.
+2. Open separate branches for any future feature or bug fix.
 
 ## Development Workflow
 
