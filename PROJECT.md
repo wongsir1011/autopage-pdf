@@ -40,6 +40,10 @@ Version baseline:
 
 GitHub Release [v1.3.1](https://github.com/wongsir1011/autopage-pdf/releases/tag/v1.3.1) was published with the Windows and macOS ZIP packages and their SHA-256 checksums. The release assets match the repository copies. The owner reported Windows and macOS physical-device acceptance passed on 2026-09-29. The website download buttons now point to the release assets.
 
+### Licensing decision
+
+On 2026-09-29, the owner decided to remove the “MIT License” claim from the website. The site footer displays the copyright notice only. The repository has no `LICENSE` file; a future license decision can be recorded separately.
+
 ## Current Stack
 
 - Language: Python
@@ -88,8 +92,7 @@ These are maintenance items, not confirmed application bugs:
 
 1. Merged branches `docs/standardize-project-records`, `feature/v1.2.0`, `feature/v1.3.0` and `fix/windows-smart-end-page` remain in the repository.
 2. `main` is not currently protected.
-3. The website footer states “MIT License”, but the repository does not contain a `LICENSE` file.
-4. Vercel and GitHub Pages both publish the site; Vercel is treated as primary and GitHub Pages as secondary until a different decision is recorded.
+3. Vercel and GitHub Pages both publish the site; Vercel is treated as primary and GitHub Pages as secondary until a different decision is recorded.
 
 ## Current Work
 
@@ -97,11 +100,10 @@ Complete post-release maintenance and establish AutoPage as the reference workfl
 
 ## Next Actions
 
-1. Decide whether to add an MIT `LICENSE` file or revise the website wording.
-2. Protect `main` and require successful tests before merge.
-3. Remove or archive merged branches after confirming they are no longer needed.
-4. Record AutoPage in the central Project Registry.
-5. Open separate branches for any future feature or bug fix.
+1. Protect `main` and require successful tests before merge.
+2. Remove or archive merged branches after confirming they are no longer needed.
+3. Record AutoPage in the central Project Registry.
+4. Open separate branches for any future feature or bug fix.
 
 ## Development Workflow
 
