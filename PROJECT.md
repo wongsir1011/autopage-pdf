@@ -14,7 +14,8 @@
 - Stable source branch: `main`
 - Rule: `main` 只代表已測試及可部署的穩定原始碼
 - Latest verified stable commit: `cff0fd0472fb4632a3c8fa3f3230782e76ba6925`
-- Latest verified date: 2026-09-28
+- Latest verified date: 2026-09-29
+- Latest release: [v1.3.1](https://github.com/wongsir1011/autopage-pdf/releases/tag/v1.3.1), tag at `daaff5ed00102fd7cfced613091a2ef4c7735020`
 
 ## Current Version
 
@@ -32,11 +33,12 @@ Version baseline:
 - Production branch: `main`
 - Latest verified Vercel status on `main`: success
 - GitHub Pages deployment on latest `main`: success
-- Current packages: `downloads/AutoPage_PDF_Windows_v1.3.1.zip` and `downloads/AutoPage_PDF_Mac_v1.3.1.zip`
+- Current release assets: [Windows v1.3.1 ZIP](https://github.com/wongsir1011/autopage-pdf/releases/download/v1.3.1/AutoPage_PDF_Windows_v1.3.1.zip) and [macOS v1.3.1 ZIP](https://github.com/wongsir1011/autopage-pdf/releases/download/v1.3.1/AutoPage_PDF_Mac_v1.3.1.zip)
+- Repository copies: `downloads/AutoPage_PDF_Windows_v1.3.1.zip` and `downloads/AutoPage_PDF_Mac_v1.3.1.zip`
 
 ### Release note
 
-GitHub Releases currently contains only v1.0.0 assets. The newer v1.2.0–v1.3.1 packages are stored under `downloads/` in the repository. A future maintenance task should align GitHub Releases, tags, download links and checksums with the current stable version.
+GitHub Release [v1.3.1](https://github.com/wongsir1011/autopage-pdf/releases/tag/v1.3.1) was published with the Windows and macOS ZIP packages and their SHA-256 checksums. The release assets match the repository copies. The owner reported Windows and macOS physical-device acceptance passed on 2026-09-29. The website download buttons now point to the release assets.
 
 ## Current Stack
 
@@ -75,7 +77,8 @@ At the verified stable commit:
 - Python matrix: 3.8, 3.11 and 3.14
 - Vercel status: success
 - GitHub Pages build and deployment: success
-- Open GitHub issues: 0
+- Open GitHub issues at the verified baseline: 0
+- Windows and macOS physical-device acceptance: owner reported passed on 2026-09-29
 
 Any future change should preserve this baseline or explain the exception in the pull request.
 
@@ -83,25 +86,22 @@ Any future change should preserve this baseline or explain the exception in the 
 
 These are maintenance items, not confirmed application bugs:
 
-1. GitHub Releases is behind the current version and still shows v1.0.0.
-2. Merged branches `feature/v1.2.0`, `feature/v1.3.0` and `fix/windows-smart-end-page` remain in the repository.
-3. `main` is not currently protected.
-4. The website footer states “MIT License”, but the repository does not contain a `LICENSE` file.
-5. Vercel and GitHub Pages both publish the site; Vercel is treated as primary and GitHub Pages as secondary until a different decision is recorded.
+1. Merged branches `docs/standardize-project-records`, `feature/v1.2.0`, `feature/v1.3.0` and `fix/windows-smart-end-page` remain in the repository.
+2. `main` is not currently protected.
+3. The website footer states “MIT License”, but the repository does not contain a `LICENSE` file.
+4. Vercel and GitHub Pages both publish the site; Vercel is treated as primary and GitHub Pages as secondary until a different decision is recorded.
 
 ## Current Work
 
-Standardize repository documentation and establish AutoPage as the reference workflow for future AI-assisted projects.
+Complete post-release maintenance and establish AutoPage as the reference workflow for future AI-assisted projects.
 
 ## Next Actions
 
-1. Review and merge the documentation-standardization pull request.
-2. Decide whether to add an MIT `LICENSE` file or revise the website wording.
-3. Publish v1.3.1 as a GitHub Release with current Windows/macOS packages and checksums.
-4. Protect `main` and require successful tests before merge.
-5. Remove or archive merged branches after confirming they are no longer needed.
-6. Record AutoPage in the central Project Registry.
-7. Open separate branches for any future feature or bug fix.
+1. Decide whether to add an MIT `LICENSE` file or revise the website wording.
+2. Protect `main` and require successful tests before merge.
+3. Remove or archive merged branches after confirming they are no longer needed.
+4. Record AutoPage in the central Project Registry.
+5. Open separate branches for any future feature or bug fix.
 
 ## Development Workflow
 
@@ -147,4 +147,4 @@ Use the following instruction when a new AI Agent or collaborator takes over:
 
 ## Last Updated
 
-2026-09-28
+2026-09-29
