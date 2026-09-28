@@ -11,6 +11,7 @@
 ## Source of Truth
 
 - Canonical repository: https://github.com/wongsir1011/autopage-pdf
+- Central Project Registry: registered as the first reference project in the owner's private registry on 2026-09-29
 - Stable source branch: `main`
 - Rule: `main` 只代表已測試及可部署的穩定原始碼
 - Branch protection: `main` 必須經 pull request，且 Python 3.8、3.11、3.14 三組 GitHub Actions 測試通過；合併前須與最新 `main` 同步。管理員亦不可繞過，強制推送及刪除已禁止。
@@ -95,12 +96,13 @@ These are maintenance items, not confirmed application bugs:
 
 ## Current Work
 
-Complete post-release maintenance and establish AutoPage as the reference workflow for future AI-assisted projects.
+Post-release maintenance is complete. Use AutoPage as the reference workflow while verifying deployment provenance and choosing the next project to standardize.
 
 ## Next Actions
 
-1. Record AutoPage in the central Project Registry.
-2. Open separate branches for any future feature or bug fix.
+1. Independently verify the exact production commit on Vercel and GitHub Pages after the latest documentation merges; update the registry's `production_commit` only when confirmed.
+2. Select the next repository for one-at-a-time standardization using AutoPage as the reference.
+3. Open separate branches for future features and bug fixes.
 
 ## Development Workflow
 
