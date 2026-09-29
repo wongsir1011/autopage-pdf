@@ -34,7 +34,8 @@ Version baseline:
 - Secondary site: https://wongsir1011.github.io/autopage-pdf/
 - Production branch: `main`
 - Latest verified Vercel status on `main`: success
-- GitHub Pages deployment on latest `main`: success
+- Vercel Production deployment verified on 2026-09-29: deployment [`A3XtvgTjgqhnNRPG5gEN9EHMLiPy`](https://vercel.com/wongsir1011s-projects/autopage-pdf/A3XtvgTjgqhnNRPG5gEN9EHMLiPy) was marked **Production / Current / Ready**, assigned to `autopage-pdf-seven.vercel.app`, with source commit `1128afa456f8a46868025af9d8b4f2facf646516`. This is a point-in-time observation; recheck after a newer merge/deployment.
+- GitHub Pages deployment on latest `main`: success; exact live commit has not been independently verified
 - Current release assets: [Windows v1.3.1 ZIP](https://github.com/wongsir1011/autopage-pdf/releases/download/v1.3.1/AutoPage_PDF_Windows_v1.3.1.zip) and [macOS v1.3.1 ZIP](https://github.com/wongsir1011/autopage-pdf/releases/download/v1.3.1/AutoPage_PDF_Mac_v1.3.1.zip)
 - Repository copies: `downloads/AutoPage_PDF_Windows_v1.3.1.zip` and `downloads/AutoPage_PDF_Mac_v1.3.1.zip`
 
@@ -96,11 +97,11 @@ These are maintenance items, not confirmed application bugs:
 
 ## Current Work
 
-Post-release maintenance is complete. Use AutoPage as the reference workflow while verifying deployment provenance and choosing the next project to standardize.
+Post-release maintenance is complete. Vercel Production provenance was independently verified for the 2026-09-29 deployment; use AutoPage as the reference workflow while checking newer deployments and choosing the next project to standardize.
 
 ## Next Actions
 
-1. Independently verify the exact production commit on Vercel and GitHub Pages after the latest documentation merges; update the registry's `production_commit` only when confirmed.
+1. After this documentation merge, recheck the Vercel Production deployment's current source commit and sync the registry; verify the secondary GitHub Pages live commit separately.
 2. Select the next repository for one-at-a-time standardization using AutoPage as the reference.
 3. Open separate branches for future features and bug fixes.
 
